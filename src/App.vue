@@ -1,9 +1,8 @@
 <template>
   <MenuDrawer :data-theme="colorMode">
     <template #default>
-      <div class="p-4">
+      <div class="flex justify-center p-4">
         <RouterView />
-        TEST
       </div>
     </template>
   </MenuDrawer>
@@ -11,8 +10,8 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import MenuDrawer from './components/MenuDrawer.vue'
-import { useColorMode } from '@vueuse/core';
+import MenuDrawer from './components/layout/MenuDrawer.vue'
+import { useColorMode } from '@vueuse/core'
 
 const colorMode = useColorMode()
 </script>

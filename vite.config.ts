@@ -4,8 +4,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { VitePWA } from 'vite-plugin-pwa'
-import Inspect from 'vite-plugin-inspect'
-import { visualizer } from 'rollup-plugin-visualizer'
 const path = require('path')
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -14,17 +12,6 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       vueJsx(),
-      Inspect({
-        build: true,
-        outputDir: '.vite-inspect'
-      }),
-      visualizer({
-        gzipSize: true,
-        brotliSize: true,
-        open: false,
-        template: 'sunburst',
-        filename: '.rollup-inspect/index.html'
-      }),
       VitePWA({
         registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'favicon-dark.svg'],
