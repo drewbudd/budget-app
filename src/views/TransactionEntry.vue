@@ -1,7 +1,8 @@
 <template>
   <ContentContainer>
     <div class="flex flex-col">
-      <div class="grid grid-cols-5 gap-2">
+      <TransactionTypeToggle :value="typeToggleValue" size="32" @toggled="setTransactionType" />
+      <div class="grid grid-cols-6 gap-4">
         <div>
           <label class="form-control w-full max-w-xs">
             <div class="label">
@@ -35,15 +36,23 @@
             </div>
           </label>
         </div>
-        <div class="col-span-2">
-          <label class="form-control w-full max-w-md">
+        <div :class="{ 'col-span-2': typeToggleValue === 'expense', 'col-span-3': typeToggleValue === 'income' }">
+          <label class="form-control w-full max-w-2xl">
             <div class="label">
               <span class="label-text">{{ i18n('description') }}</span>
             </div>
             <input type="text" v-model="enteredDescription" class="input input-bordered max-w-full" />
           </label>
         </div>
-        <label class="form-control w-full max-w-xs">
+        <div>
+          <label class="form-control w-full max-w-2xl">
+            <div class="label">
+              <span class="label-text">{{ typeToggleValue === 'expense' ? i18n('vendor') : i18n('source') }}</span>
+            </div>
+            <input type="text" v-model="enteredSource" class="input input-bordered max-w-full" />
+          </label>
+        </div>
+        <label v-if="typeToggleValue === 'expense'" class="form-control w-full max-w-xs">
           <div class="label">
             <span class="label-text">{{ i18n('category') }}</span>
           </div>
@@ -73,23 +82,25 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import ChevronLeft from '@/components/icons/ChevronLeft.vue';
 import ChevronRight from '@/components/icons/ChevronRight.vue';
 import ContentContainer from '@/components/layout/ContentContainer.vue';
 import SubmitButton from '@/components/button/SubmitButton.vue';
-import { defineComponent } from 'vue';
+import TransactionTypeToggle from '@/components/toggle/TransactionTypeToggle.vue';
 
 type TransactionEntry = {
   type: 'expense' | 'income',
   date: string,
   amount: number,
   description?: string,
-  category: string
+  source?: string,
+  category?: string
 }
 
 export default defineComponent({
   name: 'TransactionEntry',
-  components: { ContentContainer, ChevronLeft, ChevronRight, SubmitButton },
+  components: { ContentContainer, ChevronLeft, ChevronRight, SubmitButton, TransactionTypeToggle },
   data() {
     return {
       categories: [
@@ -105,10 +116,12 @@ export default defineComponent({
         { value: 'sport', textPath: 'category.sport' },
         { value: 'health', textPath: 'category.health' },
       ] as { value: string, textPath: string }[],
+      typeToggleValue: 'expense' as 'income' | 'expense',
       enteredDate: "" as string,
       persistDate: false,
       enteredAmount: undefined as number | undefined,
       enteredDescription: undefined as string | undefined,
+      enteredSource: undefined as string | undefined,
       selectedCategory: "" as string,
       persistCategory: false,
       submittedEntries: [] as TransactionEntry[]
@@ -134,6 +147,10 @@ export default defineComponent({
           return 'Amount'
         case 'description':
           return 'Description'
+        case 'source':
+          return 'Source'
+        case 'vendor':
+          return 'Vendor'
         case 'category':
           return 'Category'
         case 'category.grocery':
@@ -166,6 +183,9 @@ export default defineComponent({
           return 'NO TRANSLATION'
       }
     },
+    setTransactionType(newValue: 'income' | 'expense') {
+      this.typeToggleValue = newValue
+    },
     setEnteredDate(date: Date) {
       const offset = date.getTimezoneOffset() * 60 * 1000
       this.enteredDate = new Date(date.getTime() - offset).toISOString().split('T')[0]
@@ -178,15 +198,17 @@ export default defineComponent({
     submitEntry() {
       if (this.formValid) {
         this.submittedEntries.push({
-          type: 'expense',
+          type: this.typeToggleValue,
           date: this.enteredDate,
           amount: this.enteredAmount ?? 0,
           description: this.enteredDescription?.length !== 0 ? this.enteredDescription : undefined,
-          category: this.selectedCategory
+          source: this.enteredSource?.length !== 0 ? this.enteredSource : undefined,
+          category: (this.typeToggleValue === 'expense' && this.selectedCategory.length !== 0) ? this.selectedCategory : undefined
         })
         if (!this.persistDate) this.setEnteredDate(new Date())
         this.enteredAmount = undefined
         this.enteredDescription = undefined
+        this.enteredSource = undefined
         if (!this.persistCategory) this.selectedCategory = ''
       } else {
         console.log('invalid form')
