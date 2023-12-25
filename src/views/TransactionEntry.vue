@@ -1,84 +1,105 @@
 <template>
-  <ContentContainer>
-    <div class="flex flex-col">
-      <TransactionTypeToggle :value="typeToggleValue" size="32" @toggled="setTransactionType" />
-      <div class="grid grid-cols-6 gap-4">
-        <div>
+  <div>
+    <ContentContainer>
+      <div class="flex flex-col">
+        <TransactionTypeToggle :value="typeToggleValue" size="32" @toggled="setTransactionType" />
+        <div class="grid grid-cols-5 gap-4">
+          <div>
+            <label class="form-control w-full max-w-xs">
+              <div class="label">
+                <span class="label-text">{{ i18n('date') }}</span>
+              </div>
+              <div class="flex items-center">
+                <ChevronLeft @click="stepEnteredDate(-1)" />
+                <input type="date" class="input input-bordered w-full max-w-xs" v-model="enteredDate" required />
+                <ChevronRight @click="stepEnteredDate(1)" />
+              </div>
+              <div class="label">
+                <span></span>
+                <div class="form-control">
+                  <label class="label cursor-pointer">
+                    <span class="label-text-alt pr-2">{{ i18n('persist') }}</span>
+                    <input type="checkbox" v-model="persistDate" class="checkbox checkbox-xs" />
+                  </label>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div>
+            <label class="form-control w-full max-w-xs">
+              <div class="label">
+                <span class="label-text">{{ i18n('amount') }}</span>
+              </div>
+              <div class="flex items-center">
+                <input type="number" v-model="enteredAmount" step=".01" min="0" pattern="^\d*(\.\d{0,2})?$"
+                  class="input input-bordered w-full max-w-xs" :class="{ 'input-error': !enteredAmount }" required />
+                <div class="h-fit max-h-fit ml-2">EUR</div>
+              </div>
+            </label>
+          </div>
+          <div class="col-span-2">
+            <label class="form-control w-full max-w-2xl">
+              <div class="label">
+                <span class="label-text">{{ i18n('description') }}</span>
+              </div>
+              <input type="text" v-model="enteredDescription" class="input input-bordered max-w-full" />
+            </label>
+          </div>
           <label class="form-control w-full max-w-xs">
             <div class="label">
-              <span class="label-text">{{ i18n('date') }}</span>
+              <span class="label-text">{{ i18n('category') }}</span>
             </div>
-            <div class="flex items-center">
-              <ChevronLeft @click="stepEnteredDate(-1)" />
-              <input type="date" class="input input-bordered w-full max-w-xs" v-model="enteredDate" required />
-              <ChevronRight @click="stepEnteredDate(1)" />
-            </div>
+            <select class="select select-bordered" v-model="selectedCategory"
+              :class="{ 'select-error': !selectedCategory }" required>
+              <option disabled selected value="">{{ i18n('pick-one') }}</option>
+              <option v-if="typeToggleValue === 'expense'" v-for="category in expenseCategories" :key="category"
+                :value="category">{{
+                  i18n(`category.${category}`)
+                }}</option>
+              <option v-if="typeToggleValue === 'income'" v-for="category in incomeCategories" :key="category"
+                :value="category">{{
+                  i18n(`category.${category}`)
+                }}</option>
+            </select>
             <div class="label">
               <span></span>
               <div class="form-control">
                 <label class="label cursor-pointer">
                   <span class="label-text-alt pr-2">{{ i18n('persist') }}</span>
-                  <input type="checkbox" v-model="persistDate" class="checkbox checkbox-xs" />
+                  <input type="checkbox" v-model="persistCategory" class=" checkbox checkbox-xs" />
                 </label>
               </div>
             </div>
           </label>
         </div>
-        <div>
-          <label class="form-control w-full max-w-xs">
-            <div class="label">
-              <span class="label-text">{{ i18n('amount') }}</span>
-            </div>
-            <div class="flex items-center">
-              <input type="number" v-model="enteredAmount" step=".01" pattern="^\d*(\.\d{0,2})?$"
-                class="input input-bordered w-full max-w-xs" :class="{ 'input-error': !enteredAmount }" required />
-              <div class="h-fit max-h-fit ml-2">EUR</div>
-            </div>
-          </label>
+        <div class="self-end">
+          <SubmitButton @click="submitEntry" />
         </div>
-        <div :class="{ 'col-span-2': typeToggleValue === 'expense', 'col-span-3': typeToggleValue === 'income' }">
-          <label class="form-control w-full max-w-2xl">
-            <div class="label">
-              <span class="label-text">{{ i18n('description') }}</span>
-            </div>
-            <input type="text" v-model="enteredDescription" class="input input-bordered max-w-full" />
-          </label>
-        </div>
-        <div>
-          <label class="form-control w-full max-w-2xl">
-            <div class="label">
-              <span class="label-text">{{ typeToggleValue === 'expense' ? i18n('vendor') : i18n('source') }}</span>
-            </div>
-            <input type="text" v-model="enteredSource" class="input input-bordered max-w-full" />
-          </label>
-        </div>
-        <label v-if="typeToggleValue === 'expense'" class="form-control w-full max-w-xs">
-          <div class="label">
-            <span class="label-text">{{ i18n('category') }}</span>
-          </div>
-          <select class="select select-bordered" v-model="selectedCategory" :class="{ 'select-error': !selectedCategory }"
-            required>
-            <option disabled selected value="">{{ i18n('pick-one') }}</option>
-            <option v-for="category in categories" :key="category.value" :value="category.value">{{
-              i18n(category.textPath)
-            }}</option>
-          </select>
-          <div class="label">
-            <span></span>
-            <div class="form-control">
-              <label class="label cursor-pointer">
-                <span class="label-text-alt pr-2">{{ i18n('persist') }}</span>
-                <input type="checkbox" v-model="persistCategory" class=" checkbox checkbox-xs" />
-              </label>
-            </div>
-          </div>
-        </label>
       </div>
-      <div class="self-end">
-        <SubmitButton @click="submitEntry" />
+    </ContentContainer>
+    <ContentContainer v-if="submittedEntries.length !== 0 || true" class="mt-10">
+      <div class="w-full">
+        <table class="table table-lg table-zebra">
+          <thead>
+            <th>{{ i18n('type') }}</th>
+            <th>{{ i18n('date') }}</th>
+            <th>{{ i18n('amount') }}</th>
+            <th>{{ i18n('description') }}</th>
+            <th>{{ i18n('category') }}</th>
+          </thead>
+          <tbody>
+            <tr v-for="entry in submittedEntries">
+              <td>{{ i18n(entry.type) }}</td>
+              <td>{{ entry.date }}</td>
+              <td>{{ entry.amount }}</td>
+              <td>{{ entry.description }}</td>
+              <td>{{ i18n(`category.${entry.category}`) }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-  </ContentContainer>
+    </ContentContainer>
+  </div>
 </template>
 
 <script lang="ts">
@@ -88,40 +109,22 @@ import ChevronRight from '@/components/icons/ChevronRight.vue';
 import ContentContainer from '@/components/layout/ContentContainer.vue';
 import SubmitButton from '@/components/button/SubmitButton.vue';
 import TransactionTypeToggle from '@/components/toggle/TransactionTypeToggle.vue';
-
-type TransactionEntry = {
-  type: 'expense' | 'income',
-  date: string,
-  amount: number,
-  description?: string,
-  source?: string,
-  category?: string
-}
+import { EXPENSE_CATEGORIES } from '@/types/transaction/ExpenseCategory'
+import { INCOME_CATEGORIES } from '@/types/transaction/IncomeCategory';
+import type { TransactionEntry } from '@/types/transaction/TransactionEntry';
 
 export default defineComponent({
   name: 'TransactionEntry',
   components: { ContentContainer, ChevronLeft, ChevronRight, SubmitButton, TransactionTypeToggle },
   data() {
     return {
-      categories: [
-        { value: 'grocery', textPath: 'category.grocery' },
-        { value: 'general-household', textPath: 'category.general-household' },
-        { value: 'eat-outs', textPath: 'category.eat-outs' },
-        { value: 'home', textPath: 'category.home' },
-        { value: 'transportation', textPath: 'category.transportation' },
-        { value: 'rent', textPath: 'category.rent' },
-        { value: 'utilities', textPath: 'category.utilities' },
-        { value: 'travel', textPath: 'category.travel' },
-        { value: 'savings', textPath: 'category.savings' },
-        { value: 'sport', textPath: 'category.sport' },
-        { value: 'health', textPath: 'category.health' },
-      ] as { value: string, textPath: string }[],
-      typeToggleValue: 'expense' as 'income' | 'expense',
+      expenseCategories: EXPENSE_CATEGORIES,
+      incomeCategories: INCOME_CATEGORIES,
+      typeToggleValue: 'expense' as 'expense' | 'income',
       enteredDate: "" as string,
       persistDate: false,
       enteredAmount: undefined as number | undefined,
       enteredDescription: undefined as string | undefined,
-      enteredSource: undefined as string | undefined,
       selectedCategory: "" as string,
       persistCategory: false,
       submittedEntries: [] as TransactionEntry[]
@@ -141,6 +144,12 @@ export default defineComponent({
     // Temporary method, i18n to be implemented later
     i18n(path: string): string {
       switch (path) {
+        case 'type':
+          return 'Type'
+        case 'expense':
+          return 'Expense'
+        case 'income':
+          return 'Income'
         case 'date':
           return 'Date'
         case 'amount':
@@ -175,6 +184,10 @@ export default defineComponent({
           return 'Sport'
         case 'category.health':
           return 'Health'
+        case 'category.salary':
+          return 'Salary'
+        case 'category.refund':
+          return 'Refund'
         case 'pick-one':
           return 'Pick one'
         case 'persist':
@@ -202,13 +215,11 @@ export default defineComponent({
           date: this.enteredDate,
           amount: this.enteredAmount ?? 0,
           description: this.enteredDescription?.length !== 0 ? this.enteredDescription : undefined,
-          source: this.enteredSource?.length !== 0 ? this.enteredSource : undefined,
-          category: (this.typeToggleValue === 'expense' && this.selectedCategory.length !== 0) ? this.selectedCategory : undefined
+          category: this.selectedCategory
         })
         if (!this.persistDate) this.setEnteredDate(new Date())
         this.enteredAmount = undefined
         this.enteredDescription = undefined
-        this.enteredSource = undefined
         if (!this.persistCategory) this.selectedCategory = ''
       } else {
         console.log('invalid form')
