@@ -77,7 +77,7 @@
         </div>
       </div>
     </ContentContainer>
-    <ContentContainer v-if="submittedEntries.length !== 0 || true" class="mt-10">
+    <ContentContainer v-if="transactions.length !== 0 || true" class="mt-10">
       <div class="w-full">
         <table class="table table-lg table-zebra">
           <thead>
@@ -88,7 +88,7 @@
             <th>{{ i18n('category') }}</th>
           </thead>
           <tbody>
-            <tr v-for="entry in submittedEntries">
+            <tr v-for="entry in transactions">
               <td>{{ i18n(entry.type) }}</td>
               <td>{{ entry.date }}</td>
               <td>{{ entry.amount }}</td>
@@ -111,11 +111,18 @@ import SubmitButton from '@/components/button/SubmitButton.vue';
 import TransactionTypeToggle from '@/components/toggle/TransactionTypeToggle.vue';
 import { EXPENSE_CATEGORIES } from '@/types/transaction/ExpenseCategory'
 import { INCOME_CATEGORIES } from '@/types/transaction/IncomeCategory';
-import type { TransactionEntry } from '@/types/transaction/TransactionEntry';
+import { useTransactionsStore } from '@/stores/transactions';
 
 export default defineComponent({
   name: 'TransactionEntry',
   components: { ContentContainer, ChevronLeft, ChevronRight, SubmitButton, TransactionTypeToggle },
+  setup() {
+    const transactionsStore = useTransactionsStore()
+
+    return {
+      transactionsStore
+    }
+  },
   data() {
     return {
       expenseCategories: EXPENSE_CATEGORIES,
@@ -127,12 +134,14 @@ export default defineComponent({
       enteredDescription: undefined as string | undefined,
       selectedCategory: "" as string,
       persistCategory: false,
-      submittedEntries: [] as TransactionEntry[]
     }
   },
   computed: {
     formValid(): boolean {
       return !(this.enteredDate.length === 0 || !this.enteredAmount || this.selectedCategory.length === 0)
+    },
+    transactions() {
+      return this.transactionsStore.transactions
     }
   },
   created() {
@@ -210,7 +219,7 @@ export default defineComponent({
     },
     submitEntry() {
       if (this.formValid) {
-        this.submittedEntries.push({
+        this.transactionsStore.addTransaction({
           type: this.typeToggleValue,
           date: this.enteredDate,
           amount: this.enteredAmount ?? 0,
