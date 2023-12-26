@@ -1,5 +1,5 @@
 <template>
-  <div class="hero max-w-xl lg:max-w-6xl bg-base-200">
+  <div class="hero max-w-4xl lg:max-w-7xl bg-base-200">
     <div :class="contentClasses">
       <div>
         <slot></slot>
