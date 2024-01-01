@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+import { defineComponent, type PropType } from 'vue'
 
 export default defineComponent({
   name: 'ButtonBase',
@@ -16,37 +16,48 @@ export default defineComponent({
     text: {
       type: String,
       required: false,
-      default: () => undefined
+      default: () => undefined,
     },
     buttonColorClass: {
-      type: String as PropType<'neutral' | 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'ghost' | 'link'>,
+      type: String as PropType<
+        | 'neutral'
+        | 'primary'
+        | 'secondary'
+        | 'accent'
+        | 'info'
+        | 'success'
+        | 'warning'
+        | 'error'
+        | 'ghost'
+        | 'link'
+      >,
       required: false,
-      default: () => 'primary'
+      default: () => 'primary',
     },
     outline: {
       type: Boolean,
       required: false,
-      default: () => false
+      default: () => false,
     },
     size: {
       type: String as PropType<'large' | 'normal' | 'small' | 'tiny'>,
       required: false,
-      default: () => 'normal'
+      default: () => 'normal',
     },
     wide: {
       type: Boolean,
       required: false,
-      default: () => false
+      default: () => false,
     },
     shape: {
       type: String as PropType<'square' | 'circle' | undefined>,
       required: false,
-      default: () => undefined
+      default: () => undefined,
     },
     animation: {
       type: Boolean,
       required: false,
-      default: () => true
+      default: () => true,
     },
     disabled: {
       type: Boolean,
@@ -61,8 +72,8 @@ export default defineComponent({
     iconLocation: {
       type: String as PropType<'before' | 'after'>,
       required: false,
-      default: () => undefined
-    }
+      default: () => undefined,
+    },
   },
   computed: {
     classes() {
@@ -87,7 +98,8 @@ export default defineComponent({
         'btn-circle': this.shape === 'circle',
         'no-animation': this.animation === false,
       }
-    }
-  }
+    },
+  },
 })
-</script>fffffff
+</script>
+fffffff

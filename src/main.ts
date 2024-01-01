@@ -7,8 +7,6 @@ import { createPinia } from 'pinia'
 
 const pinia = createPinia()
 
-const app = createApp(App)
-  .use(router)
-  .use(pinia)
+const app = createApp(App).use(router).use(pinia)
 
 app.mount('#app')

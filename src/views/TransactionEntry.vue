@@ -11,7 +11,12 @@
               </div>
               <div class="flex items-center">
                 <ChevronLeft @click="stepEnteredDate(-1)" />
-                <input type="date" class="input input-bordered w-full max-w-xs" v-model="enteredDate" required />
+                <input
+                  type="date"
+                  class="input input-bordered w-full max-w-xs"
+                  v-model="enteredDate"
+                  required
+                />
                 <ChevronRight @click="stepEnteredDate(1)" />
               </div>
               <div class="label">
@@ -31,8 +36,16 @@
                 <span class="label-text">{{ i18n('amount') }}</span>
               </div>
               <div class="flex items-center">
-                <input type="number" v-model="enteredAmount" step=".01" min="0" pattern="^\d*(\.\d{0,2})?$"
-                  class="input input-bordered w-full max-w-xs" :class="{ 'input-error': !enteredAmount }" required />
+                <input
+                  type="number"
+                  v-model="enteredAmount"
+                  step=".01"
+                  min="0"
+                  pattern="^\d*(\.\d{0,2})?$"
+                  class="input input-bordered w-full max-w-xs"
+                  :class="{ 'input-error': !enteredAmount }"
+                  required
+                />
                 <div class="h-fit max-h-fit ml-2">EUR</div>
               </div>
             </label>
@@ -42,31 +55,47 @@
               <div class="label">
                 <span class="label-text">{{ i18n('description') }}</span>
               </div>
-              <input type="text" v-model="enteredDescription" class="input input-bordered max-w-full" />
+              <input
+                type="text"
+                v-model="enteredDescription"
+                class="input input-bordered max-w-full"
+              />
             </label>
           </div>
           <label class="form-control w-full max-w-xs">
             <div class="label">
               <span class="label-text">{{ i18n('category') }}</span>
             </div>
-            <select class="select select-bordered" v-model="selectedCategory"
-              :class="{ 'select-error': !selectedCategory }" required>
+            <select
+              class="select select-bordered"
+              v-model="selectedCategory"
+              :class="{ 'select-error': !selectedCategory }"
+              required
+            >
               <option disabled selected value="">{{ i18n('pick-one') }}</option>
-              <option v-if="typeToggleValue === 'expense'" v-for="category in expenseCategories" :key="category"
-                :value="category">{{
-                  i18n(`category.${category}`)
-                }}</option>
-              <option v-if="typeToggleValue === 'income'" v-for="category in incomeCategories" :key="category"
-                :value="category">{{
-                  i18n(`category.${category}`)
-                }}</option>
+              <option
+                v-if="typeToggleValue === 'expense'"
+                v-for="category in expenseCategories"
+                :key="category"
+                :value="category"
+              >
+                {{ i18n(`category.${category}`) }}
+              </option>
+              <option
+                v-if="typeToggleValue === 'income'"
+                v-for="category in incomeCategories"
+                :key="category"
+                :value="category"
+              >
+                {{ i18n(`category.${category}`) }}
+              </option>
             </select>
             <div class="label">
               <span></span>
               <div class="form-control">
                 <label class="label cursor-pointer">
                   <span class="label-text-alt pr-2">{{ i18n('persist') }}</span>
-                  <input type="checkbox" v-model="persistCategory" class=" checkbox checkbox-xs" />
+                  <input type="checkbox" v-model="persistCategory" class="checkbox checkbox-xs" />
                 </label>
               </div>
             </div>
@@ -77,7 +106,7 @@
         </div>
       </div>
     </ContentContainer>
-    <ContentContainer v-if="transactions.length !== 0 || true" class="mt-10">
+    <ContentContainer v-if="transactions.length !== 0" class="mt-10">
       <div class="w-full">
         <table class="table table-lg table-zebra">
           <thead>
@@ -99,19 +128,22 @@
         </table>
       </div>
     </ContentContainer>
+    <ContentContainer v-if="transactions.length !== 0">
+      {{ transactionsStore.transactionsAsCsvString }}
+    </ContentContainer>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import ChevronLeft from '@/components/icons/ChevronLeft.vue';
-import ChevronRight from '@/components/icons/ChevronRight.vue';
-import ContentContainer from '@/components/layout/ContentContainer.vue';
-import SubmitButton from '@/components/button/SubmitButton.vue';
-import TransactionTypeToggle from '@/components/toggle/TransactionTypeToggle.vue';
+import { defineComponent } from 'vue'
+import ChevronLeft from '@/components/icons/ChevronLeft.vue'
+import ChevronRight from '@/components/icons/ChevronRight.vue'
+import ContentContainer from '@/components/layout/ContentContainer.vue'
+import SubmitButton from '@/components/button/SubmitButton.vue'
+import TransactionTypeToggle from '@/components/toggle/TransactionTypeToggle.vue'
 import { EXPENSE_CATEGORIES } from '@/types/transaction/ExpenseCategory'
-import { INCOME_CATEGORIES } from '@/types/transaction/IncomeCategory';
-import { useTransactionsStore } from '@/stores/transactions';
+import { INCOME_CATEGORIES } from '@/types/transaction/IncomeCategory'
+import { useTransactionsStore } from '@/stores/transactions'
 
 export default defineComponent({
   name: 'TransactionEntry',
@@ -120,7 +152,7 @@ export default defineComponent({
     const transactionsStore = useTransactionsStore()
 
     return {
-      transactionsStore
+      transactionsStore,
     }
   },
   data() {
@@ -128,21 +160,25 @@ export default defineComponent({
       expenseCategories: EXPENSE_CATEGORIES,
       incomeCategories: INCOME_CATEGORIES,
       typeToggleValue: 'expense' as 'expense' | 'income',
-      enteredDate: "" as string,
+      enteredDate: '' as string,
       persistDate: false,
       enteredAmount: undefined as number | undefined,
       enteredDescription: undefined as string | undefined,
-      selectedCategory: "" as string,
+      selectedCategory: '' as string,
       persistCategory: false,
     }
   },
   computed: {
     formValid(): boolean {
-      return !(this.enteredDate.length === 0 || !this.enteredAmount || this.selectedCategory.length === 0)
+      return !(
+        this.enteredDate.length === 0 ||
+        !this.enteredAmount ||
+        this.selectedCategory.length === 0
+      )
     },
     transactions() {
       return this.transactionsStore.transactions
-    }
+    },
   },
   created() {
     const now = new Date()
@@ -224,7 +260,7 @@ export default defineComponent({
           date: this.enteredDate,
           amount: this.enteredAmount ?? 0,
           description: this.enteredDescription?.length !== 0 ? this.enteredDescription : undefined,
-          category: this.selectedCategory
+          category: this.selectedCategory,
         })
         if (!this.persistDate) this.setEnteredDate(new Date())
         this.enteredAmount = undefined
@@ -233,8 +269,8 @@ export default defineComponent({
       } else {
         console.log('invalid form')
       }
-    }
-  }
+    },
+  },
 })
 </script>
 
@@ -247,7 +283,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 </style>

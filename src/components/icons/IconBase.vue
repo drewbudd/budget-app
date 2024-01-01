@@ -1,42 +1,48 @@
 <template>
-  <Icon :icon="path" :height="size" :width="size" :color="color" :horizontalFlip="horizontalFlip"
-    :verticalFlip="verticalFlip" />
+  <Icon
+    :icon="path"
+    :height="size"
+    :width="size"
+    :color="color"
+    :horizontalFlip="horizontalFlip"
+    :verticalFlip="verticalFlip"
+  />
 </template>
 
 <script lang="ts">
-import { Icon } from '@iconify/vue';
-import { defineComponent, type PropType } from 'vue';
+import { Icon } from '@iconify/vue'
+import { defineComponent, type PropType } from 'vue'
 
 export default defineComponent({
   name: 'IconBase',
   components: {
-    Icon
+    Icon,
   },
   props: {
     collection: {
       type: String,
       required: false,
-      default: () => 'material-symbols'
+      default: () => 'material-symbols',
     },
     icon: {
       type: String,
-      required: true
+      required: true,
     },
     size: {
       type: Number,
       required: false,
-      default: () => 24
+      default: () => 24,
     },
     color: {
       type: String,
       required: false,
-      default: () => undefined
+      default: () => undefined,
     },
     flip: {
       type: String as PropType<'horizontal' | 'vertical' | 'both'>,
       required: false,
-      default: () => undefined
-    }
+      default: () => undefined,
+    },
   },
   computed: {
     path(): string {
@@ -47,7 +53,7 @@ export default defineComponent({
     },
     verticalFlip(): boolean {
       return this.flip === 'vertical' || this.flip === 'both'
-    }
-  }
+    },
+  },
 })
 </script>

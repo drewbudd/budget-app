@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { type PropType, defineComponent } from 'vue';
+import { type PropType, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'ContentContainer',
@@ -17,7 +17,7 @@ export default defineComponent({
     contentAlign: {
       type: String as PropType<'left' | 'center' | 'right'>,
       required: false,
-      default: () => 'center'
+      default: () => 'center',
     },
   },
   computed: {
@@ -29,7 +29,7 @@ export default defineComponent({
         'text-center': this.contentAlign === 'center',
         'text-right': this.contentAlign === 'right',
       }
-    }
-  }
+    },
+  },
 })
 </script>
