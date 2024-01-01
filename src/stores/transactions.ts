@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { TransactionEntry } from '@/types/transaction/TransactionEntry'
+import Papa from 'papaparse'
 
 export const useTransactionsStore = defineStore('transactions', {
   state: () => ({
@@ -9,12 +10,15 @@ export const useTransactionsStore = defineStore('transactions', {
     lastNTransactions: (state) => {
       return (n: number) => state.transactions.slice(0, n)
     },
-    incomeEntries: ({ transactions }) => transactions.filter(transaction => transaction.type === 'income'),
-    expenseEntries: ({ transactions }) => transactions.filter(transaction => transaction.type === 'expense'),
+    incomeEntries: ({ transactions }) =>
+      transactions.filter((transaction) => transaction.type === 'income'),
+    expenseEntries: ({ transactions }) =>
+      transactions.filter((transaction) => transaction.type === 'expense'),
+    transactionsAsCsvString: ({ transactions }) => Papa.unparse(transactions),
   },
   actions: {
     addTransaction(transaction: TransactionEntry) {
       this.transactions.push(transaction)
-    }
-  }
+    },
+  },
 })
