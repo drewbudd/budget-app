@@ -3,24 +3,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import IconBase from './IconBase.vue';
+import { defineComponent } from 'vue'
+import IconBase from './IconBase.vue'
 
 export default defineComponent({
   name: 'ArrowRightIcon',
   components: {
-    IconBase
+    IconBase,
   },
   props: {
     size: {
       type: Number,
       required: false,
-      default: () => undefined
+      default: () => undefined,
     },
     color: {
       type: String,
       required: false,
-      default: () => undefined
+      default: () => undefined,
     },
   },
 })

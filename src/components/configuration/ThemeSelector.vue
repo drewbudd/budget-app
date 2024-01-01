@@ -6,8 +6,14 @@
         <div class="form-control">
           <label class="label cursor-pointer w-44">
             <span class="label-text">{{ theme.display }}</span>
-            <input type="radio" name="theme-radios" class="radio theme-controller" :value="theme.value"
-              v-model="colorMode" @click="onSelectTheme" />
+            <input
+              type="radio"
+              name="theme-radios"
+              class="radio theme-controller"
+              :value="theme.value"
+              v-model="colorMode"
+              @click="onSelectTheme"
+            />
           </label>
         </div>
       </li>
@@ -16,8 +22,8 @@
 </template>
 
 <script lang="ts">
-import { useColorMode } from '@vueuse/core';
-import { defineComponent } from 'vue';
+import { useColorMode } from '@vueuse/core'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'ThemeSelector',
@@ -25,7 +31,7 @@ export default defineComponent({
     const colorMode = useColorMode()
 
     return {
-      colorMode
+      colorMode,
     }
   },
   data() {
@@ -60,16 +66,16 @@ export default defineComponent({
         { display: 'Lemonade', value: 'lemonade' },
         { display: 'Night', value: 'night' },
         { display: 'Coffee', value: 'coffee' },
-        { display: 'Winter', value: 'winter' }
-      ] as { display: string; value: string }[]
+        { display: 'Winter', value: 'winter' },
+      ] as { display: string; value: string }[],
     }
   },
   methods: {
     async onSelectTheme() {
       setTimeout(() => {
         this.$refs.menuParent.removeAttribute('open')
-      }, 100);
-    }
-  }
+      }, 100)
+    },
+  },
 })
 </script>

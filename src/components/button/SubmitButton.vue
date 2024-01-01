@@ -3,34 +3,34 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
-import ButtonBase from './ButtonBase.vue';
+import { defineComponent, type PropType } from 'vue'
+import ButtonBase from './ButtonBase.vue'
 
 export default defineComponent({
   name: 'SubmitButton',
   components: {
-    ButtonBase
+    ButtonBase,
   },
   props: {
     outline: {
       type: Boolean,
       required: false,
-      default: () => false
+      default: () => false,
     },
     size: {
       type: String as PropType<'large' | 'normal' | 'small' | 'tiny'>,
       required: false,
-      default: () => 'normal'
+      default: () => 'normal',
     },
     wide: {
       type: Boolean,
       required: false,
-      default: () => false
+      default: () => false,
     },
     animation: {
       type: Boolean,
       required: false,
-      default: () => true
+      default: () => true,
     },
     disabled: {
       type: Boolean,
@@ -45,8 +45,8 @@ export default defineComponent({
     iconLocation: {
       type: String as PropType<'before' | 'after'>,
       required: false,
-      default: () => undefined
-    }
+      default: () => undefined,
+    },
   },
 })
-</script>fffffff
+</script>

@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import IconBase from './IconBase.vue';
+import IconBase from './IconBase.vue'
 </script>

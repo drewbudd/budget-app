@@ -5,17 +5,19 @@
       <div class="container min-w-full">
         <div class="navbar bg-base-100 lg:bg-primary">
           <div class="flex-none">
-            <label ref="drawerToggleLabel" for="menu-drawer"
-              class="btn btn-ghost btn-square drawer-button self-start lg:hidden">
+            <label
+              ref="drawerToggleLabel"
+              for="menu-drawer"
+              class="btn btn-ghost btn-square drawer-button self-start lg:hidden"
+            >
               <MenuIcon />
             </label>
           </div>
           <div class="flex-1">
-            <div class="lg:hidden">
-              Budget App
-            </div>
+            <div class="lg:hidden">Budget App</div>
           </div>
           <div class="flex-none">
+            <DownloadTransactions class="mx-2" />
             <ThemeSelector />
           </div>
         </div>
@@ -26,13 +28,14 @@
       <label for="menu-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
       <div class="menu p-2 w-80 min-h-full bg-base-200 text-base-content">
         <!-- Sidebar content here -->
-        <button for="menu-drawer" class="btn btn-ghost btn-square drawer-button self-start lg:hidden"
-          @click.stop="toggleMenuDrawer">
+        <button
+          for="menu-drawer"
+          class="btn btn-ghost btn-square drawer-button self-start lg:hidden"
+          @click.stop="toggleMenuDrawer"
+        >
           <CloseIcon />
         </button>
-        <div class="invisible lg:pl-4 lg:pt-3 lg:pb-6 lg:text-xl lg:visible">
-          Budget App
-        </div>
+        <div class="invisible lg:pl-4 lg:pt-3 lg:pb-6 lg:text-xl lg:visible">Budget App</div>
         <ul>
           <li>
             <RouterLink :to="{ name: HOME }">Home</RouterLink>
@@ -48,10 +51,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import MenuIcon from '../icons/MenuIcon.vue';
-import CloseIcon from '../icons/CloseIcon.vue';
+import MenuIcon from '../icons/MenuIcon.vue'
+import CloseIcon from '../icons/CloseIcon.vue'
 import ThemeSelector from '../configuration/ThemeSelector.vue'
 import { HOME, TRANSACTION_ENTRY } from '@/router/route-names'
+import DownloadTransactions from '../data/DownloadTransactions.vue'
 
 const drawerToggleLabel = ref<HTMLInputElement | null>(null)
 

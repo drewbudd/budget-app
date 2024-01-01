@@ -2,8 +2,13 @@
   <div class="flex flex-col">
     <div class="self-center">
       <label class="swap swap-flip">
-        <input type="checkbox" v-model="typeToggleValue" true-value="expense" false-value="income"
-          @change="handleToggle" />
+        <input
+          type="checkbox"
+          v-model="typeToggleValue"
+          true-value="expense"
+          false-value="income"
+          @change="handleToggle"
+        />
         <div class="swap-on grid grid-cols-3 gap-2">
           <BankIcon class="col-start-2" :size="iconSize" />
           <ArrowRightIcon color="oklch(var(--er))" :size="iconSize" />
@@ -18,9 +23,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
-import BankIcon from '../icons/BankIcon.vue';
-import ArrowRightIcon from '../icons/ArrowRightIcon.vue';
+import { defineComponent, type PropType } from 'vue'
+import BankIcon from '../icons/BankIcon.vue'
+import ArrowRightIcon from '../icons/ArrowRightIcon.vue'
 
 export default defineComponent({
   name: 'TransactionTypeToggle',
@@ -37,8 +42,8 @@ export default defineComponent({
     iconSize: {
       type: Number,
       required: false,
-      default: () => 36
-    }
+      default: () => 36,
+    },
   },
   data() {
     return {
@@ -51,7 +56,7 @@ export default defineComponent({
   methods: {
     handleToggle() {
       this.$emit('toggled', this.typeToggleValue)
-    }
-  }
+    },
+  },
 })
 </script>
