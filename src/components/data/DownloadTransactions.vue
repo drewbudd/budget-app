@@ -12,6 +12,7 @@ import FileDownloadIcon from '../icons/FileDownloadIcon.vue'
 
 export default defineComponent({
   name: 'DownloadTransactions',
+  components: { FileDownloadIcon },
   props: {
     disabled: {
       type: Boolean,
@@ -37,6 +38,5 @@ export default defineComponent({
       this.downloadLink.click()
     },
   },
-  components: { FileDownloadIcon },
 })
 </script>
