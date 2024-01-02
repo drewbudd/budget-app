@@ -17,6 +17,7 @@
             <div class="lg:hidden">Budget App</div>
           </div>
           <div class="flex-none">
+            <UploadTransactions class="mx-2" />
             <DownloadTransactions class="mx-2" />
             <ThemeSelector />
           </div>
@@ -56,6 +57,7 @@ import CloseIcon from '../icons/CloseIcon.vue'
 import ThemeSelector from '../configuration/ThemeSelector.vue'
 import { HOME, TRANSACTION_ENTRY } from '@/router/route-names'
 import DownloadTransactions from '../data/DownloadTransactions.vue'
+import UploadTransactions from '../data/UploadTransactions.vue'
 
 const drawerToggleLabel = ref<HTMLInputElement | null>(null)
 
