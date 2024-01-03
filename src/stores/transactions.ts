@@ -20,5 +20,8 @@ export const useTransactionsStore = defineStore('transactions', {
     addTransaction(transaction: TransactionEntry) {
       this.transactions.push(transaction)
     },
+    setTransactions(transactions: TransactionEntry[]) {
+      this.transactions = transactions
+    }
   },
 })
