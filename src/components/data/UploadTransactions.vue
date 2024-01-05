@@ -4,14 +4,24 @@
     <dialog id="file_upload_modal" class="modal">
       <div class="modal-box">
         <form method="dialog">
-          <button class="btn btn-sm btn-ghost btn-circle absolute right-2 top-2" ref="closeButton">X</button>
+          <button class="btn btn-sm btn-ghost btn-circle absolute right-2 top-2" ref="closeButton">
+            X
+          </button>
         </form>
         <h3 class="font-bold text-lg">Transaction Import</h3>
         <div class="flex flex-col my-2">
-          <input type="file" class="file-input file-input-bordered file-input-primary w-full max-w-lg" accept="text/csv"
-            @change="setFilePath" />
+          <input
+            type="file"
+            class="file-input file-input-bordered file-input-primary w-full max-w-lg"
+            accept="text/csv"
+            @change="setFilePath"
+          />
           <div class="flex justify-end mt-2">
-            <SubmitButton class="grow-0" :disabled="submitButtonDisabled" @click="importTransactions" />
+            <SubmitButton
+              class="grow-0"
+              :disabled="submitButtonDisabled"
+              @click="importTransactions"
+            />
           </div>
         </div>
       </div>
@@ -66,9 +76,9 @@ export default defineComponent({
         complete: (results) => {
           this.transactionsStore.setTransactions(results.data as TransactionEntry[])
           this.closeButton.click()
-        }
+        },
       })
-    }
-  }
+    },
+  },
 })
 </script>

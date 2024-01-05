@@ -124,12 +124,16 @@
               <td>{{ entry.description }}</td>
               <td>{{ i18n(`category.${entry.category}`) }}</td>
             </tr>
+            <tr class="border-t-2">
+              <td></td>
+              <td>{{ i18n('balance') }}</td>
+              <td :class="{ 'bg-success': balance > 0, 'bg-error': balance < 0 }">{{ balance }}</td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
       </div>
-    </ContentContainer>
-    <ContentContainer v-if="transactions.length !== 0">
-      {{ transactionsStore.transactionsAsCsvString }}
     </ContentContainer>
   </div>
 </template>
@@ -179,6 +183,20 @@ export default defineComponent({
     transactions() {
       return this.transactionsStore.transactions
     },
+    balance() {
+      var balance: number = 0
+      this.transactions.forEach((transaction) => {
+        switch (transaction.type) {
+          case 'income':
+            balance += transaction.amount
+            return
+          case 'expense':
+            balance -= transaction.amount
+            return
+        }
+      })
+      return balance
+    },
   },
   created() {
     const now = new Date()
@@ -201,10 +219,8 @@ export default defineComponent({
           return 'Amount'
         case 'description':
           return 'Description'
-        case 'source':
-          return 'Source'
-        case 'vendor':
-          return 'Vendor'
+        case 'balance':
+          return 'Balance'
         case 'category':
           return 'Category'
         case 'category.grocery':
@@ -215,6 +231,8 @@ export default defineComponent({
           return 'Eat-outs'
         case 'category.home':
           return 'Home'
+        case 'category.yaki-nori':
+          return 'Yaki/Nori'
         case 'category.transportation':
           return 'Transportation'
         case 'category.rent':
