@@ -3,6 +3,7 @@ export const EXPENSE_CATEGORIES = [
   'general-household',
   'eat-outs',
   'home',
+  'yaki-nori',
   'transportation',
   'rent',
   'utilities',

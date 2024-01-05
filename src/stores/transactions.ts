@@ -22,6 +22,6 @@ export const useTransactionsStore = defineStore('transactions', {
     },
     setTransactions(transactions: TransactionEntry[]) {
       this.transactions = transactions
-    }
+    },
   },
 })
